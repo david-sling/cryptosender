@@ -39,3 +39,15 @@
   text-align: center;
   color: #ffffff;
 }
+
+.connected {
+  display: flex;
+  align-items: center;
+  .dot {
+    width: 10px;
+    height: 10px;
+    background: rgb(58, 216, 58);
+    border-radius: 500px;
+    margin-right: 8px;
+  }
+}

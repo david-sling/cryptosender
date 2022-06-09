@@ -2,8 +2,10 @@ import { Logo } from "assets";
 import { FC } from "react";
 import classes from "styles/components/Header.module.scss";
 import { Section } from "components/Section";
+import { useWallet } from "context/wallet";
 
 export const Header: FC = () => {
+  const { connect, account } = useWallet();
   return (
     <Section className={classes.container}>
       <div className={classes.innerContainer}>
@@ -14,7 +16,16 @@ export const Header: FC = () => {
             <p>by David Sling</p>
           </div>
         </div>
-        <button className={classes.connect}>Connect wallet</button>
+        {account ? (
+          <div className={classes.connected}>
+            <div className={classes.dot} />
+            <p>Connected</p>
+          </div>
+        ) : (
+          <button onClick={connect} className={classes.connect}>
+            Connect wallet
+          </button>
+        )}
       </div>
     </Section>
   );
