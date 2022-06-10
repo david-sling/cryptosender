@@ -1,0 +1,105 @@
+.container {
+  margin: 23px 0 50px 0;
+}
+
+.innerContainer {
+  display: flex;
+  box-shadow: 0px 4px 4px rgba(196, 172, 219, 0.26),
+    0px 4px 100px rgba(220, 189, 252, 0.35);
+  border-radius: 23px;
+  overflow: hidden;
+  height: 634px;
+}
+
+.contacts {
+  padding: 43px 21px;
+  flex: 1;
+  max-width: 376px;
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+  }
+  h2 {
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 26px;
+    color: #815ba8;
+  }
+  .edit {
+    color: #815ba8;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 31px;
+  }
+}
+
+.contact {
+  margin-bottom: 12px;
+  padding: 17px 22px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: 0.2s;
+  p {
+    transition: 0.2s;
+  }
+  .nickname {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+  }
+  .address {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+  }
+  &.selected {
+    background: rgba(231, 207, 255, 0.26);
+    p {
+      color: #8b58bd;
+    }
+  }
+  input {
+    background-color: none;
+    border: 0;
+    &.nickname {
+      cursor: pointer;
+      &::placeholder {
+        color: #8b58bd;
+      }
+    }
+    &:focus {
+      outline: none;
+      &::placeholder {
+        color: #9f9f9f;
+      }
+    }
+  }
+  .addBtn {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.sender {
+  flex: 1;
+  background-color: #815ba8;
+}
+
+.trash path {
+  fill: gray;
+  &:hover {
+    fill: #f24e1e;
+  }
+}

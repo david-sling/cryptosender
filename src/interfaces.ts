@@ -11,3 +11,9 @@ export interface Token {
   name: string;
   symbol: string;
 }
+
+export interface Contact {
+  nickname: string;
+  address: string;
+  isSelected?: boolean;
+}

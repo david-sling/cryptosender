@@ -9,20 +9,22 @@ export const Details: FC = () => {
       <h2>User Details</h2>
       {account ? (
         <table>
-          <tr>
-            <th>Wallet Address</th>
-            <td>{account}</td>
-          </tr>
-          <tr>
-            <th>Network</th>
-            <td>{currentChain?.name}</td>
-          </tr>
-          <tr>
-            <th>Balance</th>
-            <td>
-              {balance} {currentChain?.currency || "ETH"}
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <th>Wallet Address</th>
+              <td>{account}</td>
+            </tr>
+            <tr>
+              <th>Network</th>
+              <td>{currentChain?.name}</td>
+            </tr>
+            <tr>
+              <th>Balance</th>
+              <td>
+                {balance} {currentChain?.currency || "ETH"}
+              </td>
+            </tr>
+          </tbody>
         </table>
       ) : (
         <p>No wallet connected</p>

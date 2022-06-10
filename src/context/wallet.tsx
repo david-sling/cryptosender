@@ -43,7 +43,6 @@ export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
   const getCurrentChain = async (id?: number) => {
     if (!checkMetamaskInstalled()) return setCurrentChain(undefined);
     const chainId = id || (await provider?.getNetwork())?.chainId || NaN;
-    console.log({ chainId });
     setCurrentChain(
       ALLOWED_CHAINS.find((allowed) => chainId === allowed.chainId)
     );
