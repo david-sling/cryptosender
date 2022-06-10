@@ -20,6 +20,10 @@ button {
 
 input {
   font-family: "Syne", Tahoma, Geneva, Verdana, sans-serif;
+  &:hover,
+  &:focus-visible {
+    outline: 0;
+  }
 }
 
 .number {

@@ -1,5 +1,5 @@
 import { Contact } from "interfaces";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 
 export const useContacts = () => {
@@ -9,6 +9,8 @@ export const useContacts = () => {
     nickname: "",
   });
   const [isEditingContacts, setIsEditingContacts] = useState(false);
+  const [splitEqual, setSplitEqual] = useState(true);
+  const [amount, setAmount] = useState(0);
   const newContactBinder = (key: keyof Contact) => ({
     value: newContact[key] as string,
     onChange: (e: ChangeEvent<HTMLInputElement>) =>
@@ -26,13 +28,38 @@ export const useContacts = () => {
   const deleteContact = (address: string) =>
     setContacts((p) => p.filter((c) => c.address !== address));
 
-  const selectedContacts = useMemo(
-    () =>
-      contacts
-        .filter(({ isSelected }) => isSelected)
-        .map((contact) => ({ ...contact, amount: 0 })),
-    [contacts]
+  const [selectedContacts, setSelectedContacts] = useState<
+    {
+      amount: number;
+      nickname: string;
+      address: string;
+      isSelected?: boolean | undefined;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    setSelectedContacts((p) => {
+      const selected = contacts.filter(({ isSelected }) => isSelected);
+      return selected.map((contact) => ({
+        ...contact,
+        amount: splitEqual
+          ? amount / selected.length
+          : p.find((c) => c.address === contact.address)?.amount || 0,
+      }));
+    });
+  }, [contacts, amount, splitEqual]);
+
+  const summationSelected = useMemo(
+    () => selectedContacts.reduce((acc, curr) => acc + curr.amount, 0),
+    [selectedContacts]
   );
+
+  const changeSplitAmount = (address: string, split: number) => {
+    setSelectedContacts((p) =>
+      p.map((c) => (c.address === address ? { ...c, amount: split } : c))
+    );
+    if (splitEqual) setSplitEqual(false);
+  };
 
   const toggleSelect = (address: string) =>
     setContacts((p) =>
@@ -53,5 +80,9 @@ export const useContacts = () => {
     newContact,
     addContact,
     deleteContact,
+    amount,
+    setAmount,
+    summationSelected,
+    changeSplitAmount,
   };
 };
