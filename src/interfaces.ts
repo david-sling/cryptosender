@@ -1,6 +1,7 @@
 export interface Chain {
   chainId: number;
   name: string;
+  currency: string;
 }
 
 export type Errored<T, Error = any> = T | { error: Error };
