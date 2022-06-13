@@ -19,6 +19,7 @@ interface Props {
   currentChain?: Chain;
   connect: () => Promise<string>;
   disconnect: () => void;
+  isMatic: boolean;
 }
 const WalletContext = createContext<Props>({
   account: "",
@@ -26,6 +27,7 @@ const WalletContext = createContext<Props>({
   isMetaMaskInstalled: false,
   connect: async () => "",
   disconnect: () => {},
+  isMatic: false,
 });
 
 export const useWallet = () => useContext(WalletContext);
@@ -96,6 +98,7 @@ export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
         isMetaMaskInstalled,
         connect,
         disconnect,
+        isMatic: currentChain?.chainId === 80001,
       }}
     />
   );
