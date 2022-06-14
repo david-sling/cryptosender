@@ -12,6 +12,7 @@ export interface Chain {
   symbol: "ETH";
   currency: string;
   Logo: SVG;
+  rpcUrls: string[];
 }
 
 export type Errored<T, Error = any> = T | { error: Error };

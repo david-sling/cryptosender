@@ -30,6 +30,38 @@ const WalletContext = createContext<Props>({
   isMatic: false,
 });
 
+export const changeChain = (chainId: number) => {
+  const chain = ALLOWED_CHAINS.find((c) => c.chainId === chainId);
+  if (!chain) throw new Error("Invalid chainId");
+  const isSwitch = [3].includes(chain.chainId);
+  const params = isSwitch
+    ? [
+        {
+          chainId: "0x" + chain.chainId.toString(16),
+        },
+      ]
+    : [
+        {
+          chainId: "0x" + chain.chainId.toString(16),
+          rpcUrls: chain.rpcUrls,
+          chainName: chain.name,
+          nativeCurrency: {
+            name: chain.name,
+            symbol: chain.currency,
+            decimals: 18,
+          },
+        },
+      ];
+  const method = isSwitch
+    ? "wallet_switchEthereumChain"
+    : "wallet_addEthereumChain";
+  console.log({ params, method });
+  ethereum?.request?.({
+    method,
+    params,
+  });
+};
+
 export const useWallet = () => useContext(WalletContext);
 
 export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
@@ -42,13 +74,17 @@ export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
   const [listeningForAccountChange, setListeningForAccountChange] =
     useState(false);
 
-  const getCurrentChain = async (id?: number) => {
-    if (!checkMetamaskInstalled()) return setCurrentChain(undefined);
-    const chainId = id || (await provider?.getNetwork())?.chainId || NaN;
-    setCurrentChain(
-      ALLOWED_CHAINS.find((allowed) => chainId === allowed.chainId)
-    );
-    ethereum.on("chainChanged", getCurrentChain);
+  const getCurrentChain = async (id?: string) => {
+    try {
+      const chainId = id
+        ? parseInt(id)
+        : (await provider?.getNetwork())?.chainId || NaN;
+      setCurrentChain(
+        ALLOWED_CHAINS.find((allowed) => chainId === allowed.chainId)
+      );
+    } catch (error) {
+      console.error({ error });
+    }
   };
 
   const getAccount = async (overRideListener?: boolean): Promise<string> => {
@@ -81,7 +117,9 @@ export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
   const disconnect = () => setAccount("");
 
   useEffect(() => {
+    if (!checkMetamaskInstalled()) return setCurrentChain(undefined);
     getCurrentChain();
+    ethereum.on("chainChanged", getCurrentChain);
   }, []);
 
   useEffect(() => {

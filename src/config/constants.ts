@@ -6,8 +6,9 @@ export const ALLOWED_CHAINS: Chain[] = [
     chainId: 3,
     name: "ropsten",
     symbol: "ETH",
-    currency: "Ethereum",
+    currency: "ETH",
     Logo: ETHlogo,
+    rpcUrls: ["https://ropsten.infura.io/v3/0e7868c9f0bb4eb1afa50fd007a7f23f"],
   },
   {
     chainId: 80001,
@@ -15,6 +16,7 @@ export const ALLOWED_CHAINS: Chain[] = [
     symbol: "ETH",
     currency: "MATIC",
     Logo: POLYlogo,
+    rpcUrls: ["https://matic-mumbai.chainstacklabs.com"],
   },
 ];
 

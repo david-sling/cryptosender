@@ -38,11 +38,8 @@ export const Transact: FC = () => {
   } = useContacts();
   const { currentChain, isMatic } = useWallet();
 
-  console.log({ amount });
-
   const [selectedToken, setSelectedToken] = useState("ETH");
   const [isTokenSelectOpen, setIsTokenSelectOpen] = useState(false);
-  console.log({ selectedToken });
 
   const SelectedTokenLogo = useMemo(
     () =>
