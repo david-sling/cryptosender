@@ -11,7 +11,9 @@ import {
   Trash,
 } from "assets";
 import { ERC20Tokens } from "config/constants";
+import { ethereum, signer } from "config/ethereum";
 import { useWallet } from "context/wallet";
+import { ethers } from "ethers";
 import { useContacts } from "hooks/useContacts";
 import { Token } from "interfaces";
 import { useState } from "react";
@@ -36,7 +38,7 @@ export const Transact: FC = () => {
     changeSplitAmount,
     summationSelected,
   } = useContacts();
-  const { currentChain, isMatic } = useWallet();
+  const { currentChain, isMatic, getBalance } = useWallet();
 
   const [selectedToken, setSelectedToken] = useState("ETH");
   const [isTokenSelectOpen, setIsTokenSelectOpen] = useState(false);
@@ -60,9 +62,50 @@ export const Transact: FC = () => {
         address: {},
         name: isMatic ? "MATIC" : "Ethereum",
         symbol: "ETH",
+        decimals: 18,
       },
     [selectedToken, isMatic]
   );
+
+  const send = async () => {
+    console.log({ selectedContacts });
+    const txs = await Promise.all(
+      selectedContacts.map(async ({ address, amount }) => {
+        try {
+          if (selectedTokenDetails.symbol === "ETH") {
+            const tx = await signer?.sendTransaction({
+              to: address,
+              value: ethers.utils.parseEther(amount.toString()),
+            });
+            const waited = await tx?.wait?.();
+            return waited;
+          } else {
+            if (!currentChain || !selectedTokenDetails.contracts) return;
+            const contract =
+              selectedTokenDetails.contracts[currentChain.chainId];
+            if (!contract) return;
+            const tx = await contract.transfer(
+              address,
+              amount * Math.pow(10, selectedTokenDetails.decimals),
+              {
+                gasLimit: 100000,
+              }
+            );
+            const waited = await tx?.wait?.();
+            return waited;
+          }
+        } catch (error: any) {
+          console.log({ error });
+          const codes = {
+            INVALID_ARGUMENT: `Address: ${address} not found`,
+          };
+          window.alert(codes[error.code as keyof typeof codes] || error.code);
+        }
+      })
+    );
+    console.log({ txs });
+    await getBalance();
+  };
 
   return (
     <Section className={classes.container}>
@@ -180,7 +223,7 @@ export const Transact: FC = () => {
                 </div>
               )}
             </div>
-            <button className={classes.send}>
+            <button onClick={send} className={classes.send}>
               <p>Send</p>
               <div className={classes.icon}>
                 <Send />

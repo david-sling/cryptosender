@@ -20,6 +20,7 @@ interface Props {
   connect: () => Promise<string>;
   disconnect: () => void;
   isMatic: boolean;
+  getBalance: (id?: string) => Promise<void>;
 }
 const WalletContext = createContext<Props>({
   account: "",
@@ -28,41 +29,8 @@ const WalletContext = createContext<Props>({
   connect: async () => "",
   disconnect: () => {},
   isMatic: false,
+  getBalance: async () => {},
 });
-
-const DEFAULT_CHAINS = [3];
-
-export const changeChain = (chainId: number) => {
-  const chain = ALLOWED_CHAINS.find((c) => c.chainId === chainId);
-  if (!chain) throw new Error("Invalid chainId");
-  const isSwitch = DEFAULT_CHAINS.includes(chain.chainId);
-  ethereum?.request?.(
-    isSwitch
-      ? {
-          method: "wallet_switchEthereumChain",
-          params: [
-            {
-              chainId: "0x" + chain.chainId.toString(16),
-            },
-          ],
-        }
-      : {
-          method: "wallet_addEthereumChain",
-          params: [
-            {
-              chainId: "0x" + chain.chainId.toString(16),
-              rpcUrls: chain.rpcUrls,
-              chainName: chain.name,
-              nativeCurrency: {
-                name: chain.name,
-                symbol: chain.currency,
-                decimals: 18,
-              },
-            },
-          ],
-        }
-  );
-};
 
 export const useWallet = () => useContext(WalletContext);
 
@@ -153,6 +121,7 @@ export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
         connect,
         disconnect,
         isMatic: currentChain?.chainId === 80001,
+        getBalance,
       }}
     />
   );

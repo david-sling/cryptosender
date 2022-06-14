@@ -10,7 +10,9 @@ export const provider = checkMetamaskInstalled()
   ? new ethers.providers.Web3Provider(ethereum, "any")
   : undefined;
 
-const signer = checkMetamaskInstalled() ? provider?.getSigner() : undefined;
+export const signer = checkMetamaskInstalled()
+  ? provider?.getSigner()
+  : undefined;
 
 const getContract = <T extends ethers.Contract>(
   addressOrName: string,

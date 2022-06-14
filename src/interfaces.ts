@@ -1,4 +1,5 @@
 import { FC, SVGProps } from "react";
+import { ERC20 } from "typechain-types/ERC20";
 
 export type SVG = FC<
   SVGProps<SVGSVGElement> & {
@@ -19,10 +20,12 @@ export type Errored<T, Error = any> = T | { error: Error };
 
 export interface Token {
   address: Record<number, string>;
+  contracts?: Record<number, ERC20 | undefined>;
   name: string;
   symbol: string;
   Logo: SVG;
   Icon: SVG;
+  decimals: number;
 }
 
 export interface Contact {

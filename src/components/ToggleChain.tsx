@@ -1,5 +1,6 @@
-import { changeChain, useWallet } from "context/wallet";
+import { useWallet } from "context/wallet";
 import classes from "styles/components/ToggleChain.module.scss";
+import { changeChain } from "utils";
 
 export const ToggleChain = () => {
   const { isMatic } = useWallet();

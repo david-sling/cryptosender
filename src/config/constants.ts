@@ -1,5 +1,8 @@
 import { BTClogo, BTCsymbol, ETHlogo, POLYlogo } from "assets";
 import { Chain, Token } from "interfaces";
+import { createERC20Token } from "./ethereum";
+
+export const DEFAULT_CHAINS = [3];
 
 export const ALLOWED_CHAINS: Chain[] = [
   {
@@ -30,5 +33,16 @@ export const ERC20Tokens: Token[] = [
     },
     Logo: BTClogo,
     Icon: BTCsymbol,
+    decimals: 8,
   },
-];
+].map((token) => ({
+  ...token,
+  contracts: ALLOWED_CHAINS.reduce((acc, chain) => {
+    const address = token.address[chain.chainId as keyof typeof token.address];
+    if (!address) return acc;
+    return {
+      ...acc,
+      [chain.chainId]: createERC20Token(address),
+    };
+  }, {}),
+}));
