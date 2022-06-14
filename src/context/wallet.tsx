@@ -30,36 +30,38 @@ const WalletContext = createContext<Props>({
   isMatic: false,
 });
 
+const DEFAULT_CHAINS = [3];
+
 export const changeChain = (chainId: number) => {
   const chain = ALLOWED_CHAINS.find((c) => c.chainId === chainId);
   if (!chain) throw new Error("Invalid chainId");
-  const isSwitch = [3].includes(chain.chainId);
-  const params = isSwitch
-    ? [
-        {
-          chainId: "0x" + chain.chainId.toString(16),
-        },
-      ]
-    : [
-        {
-          chainId: "0x" + chain.chainId.toString(16),
-          rpcUrls: chain.rpcUrls,
-          chainName: chain.name,
-          nativeCurrency: {
-            name: chain.name,
-            symbol: chain.currency,
-            decimals: 18,
-          },
-        },
-      ];
-  const method = isSwitch
-    ? "wallet_switchEthereumChain"
-    : "wallet_addEthereumChain";
-  console.log({ params, method });
-  ethereum?.request?.({
-    method,
-    params,
-  });
+  const isSwitch = DEFAULT_CHAINS.includes(chain.chainId);
+  ethereum?.request?.(
+    isSwitch
+      ? {
+          method: "wallet_switchEthereumChain",
+          params: [
+            {
+              chainId: "0x" + chain.chainId.toString(16),
+            },
+          ],
+        }
+      : {
+          method: "wallet_addEthereumChain",
+          params: [
+            {
+              chainId: "0x" + chain.chainId.toString(16),
+              rpcUrls: chain.rpcUrls,
+              chainName: chain.name,
+              nativeCurrency: {
+                name: chain.name,
+                symbol: chain.currency,
+                decimals: 18,
+              },
+            },
+          ],
+        }
+  );
 };
 
 export const useWallet = () => useContext(WalletContext);
@@ -101,12 +103,20 @@ export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
     return account;
   };
 
-  const getBalance = useCallback(async () => {
-    if (!checkMetamaskInstalled()) return setBalance(0);
-    if (!account) return;
-    const balance = (await provider?.getBalance(account)) || NaN;
-    setBalance(parseFloat(ethers.utils.formatEther(balance)));
-  }, [account]);
+  const getBalance = useCallback(
+    async (id?: string) => {
+      try {
+        const acc = id ? await getAccount(true) : account;
+        if (!checkMetamaskInstalled()) return setBalance(0);
+        if (!acc) return;
+        const balance = (await provider?.getBalance(acc)) || NaN;
+        setBalance(parseFloat(ethers.utils.formatEther(balance)));
+      } catch (error) {
+        console.error({ error });
+      }
+    },
+    [account]
+  );
 
   const connect = async () => {
     const account = getAccount(true);
@@ -119,7 +129,13 @@ export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
   useEffect(() => {
     if (!checkMetamaskInstalled()) return setCurrentChain(undefined);
     getCurrentChain();
-    ethereum.on("chainChanged", getCurrentChain);
+    ethereum.on("chainChanged", (id: string) => {
+      getCurrentChain(id);
+      getBalance(id);
+    });
+    provider?.listAccounts().then(([account]) => {
+      if (account) setAccount(account);
+    });
   }, []);
 
   useEffect(() => {

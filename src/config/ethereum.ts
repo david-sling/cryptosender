@@ -7,7 +7,7 @@ export const checkMetamaskInstalled = () =>
   typeof window.ethereum !== "undefined";
 
 export const provider = checkMetamaskInstalled()
-  ? new ethers.providers.Web3Provider(ethereum)
+  ? new ethers.providers.Web3Provider(ethereum, "any")
   : undefined;
 
 const signer = checkMetamaskInstalled() ? provider?.getSigner() : undefined;

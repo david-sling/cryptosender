@@ -163,6 +163,7 @@ export const Transact: FC = () => {
                   )}
                   {ERC20Tokens.map((token) => (
                     <div
+                      key={token.name}
                       onClick={() => {
                         setSelectedToken(token.symbol);
                         setIsTokenSelectOpen(false);
