@@ -1,6 +1,5 @@
 import { ALLOWED_CHAINS, DEFAULT_CHAINS } from "config/constants";
 import { ethereum } from "config/ethereum";
-import { ERC20 } from "typechain-types/ERC20";
 
 export const changeChain = (chainId: number) => {
   const chain = ALLOWED_CHAINS.find((c) => c.chainId === chainId);

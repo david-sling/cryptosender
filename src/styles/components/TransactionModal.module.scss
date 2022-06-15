@@ -1,0 +1,133 @@
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  background-color: white;
+  padding: 42px 46px;
+  border-radius: 20px;
+  h1 {
+    width: 460px;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    color: #3a3a3a;
+  }
+}
+
+.container.failure,
+.container.partial {
+  span {
+    color: #f47070;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 60%;
+      left: 0;
+      right: 0;
+      height: 13px;
+      background: #f47070;
+      opacity: 0.1;
+    }
+  }
+}
+
+.container.success {
+  span {
+    color: #43ca21;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 60%;
+      left: 0;
+      right: 0;
+      height: 13px;
+      background: #43ca21;
+      opacity: 0.1;
+    }
+  }
+}
+
+.transactions {
+  margin-top: 33px;
+}
+
+.transactionWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.transaction {
+  padding: 26px 22px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s;
+  width: 612px;
+  p {
+    transition: 0.2s;
+  }
+  .nickname {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+  }
+  .address {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+  }
+  .message {
+    width: 181px;
+    padding: 8px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 14px;
+    color: #ffffff;
+    border-radius: 8px;
+    text-align: center;
+  }
+  &.success {
+    color: #43ca21;
+    background-color: rgba(67, 202, 33, 0.1);
+    .message {
+      background-color: #43ca21;
+    }
+  }
+  &.failure {
+    color: #f47070;
+    background-color: rgba(244, 112, 112, 0.1);
+    .message {
+      background-color: #f47070;
+    }
+  }
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 21px;
+  width: 50px;
+  height: 50px;
+  border-radius: 99px;
+  background: rgba(158, 111, 205, 0.1);
+  cursor: pointer;
+}
+
+.continue {
+  background: #9e6fcd;
+  border-radius: 15px;
+  padding: 18px 72px;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 20px;
+}

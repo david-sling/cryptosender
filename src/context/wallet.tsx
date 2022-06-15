@@ -11,6 +11,7 @@ import { ethers } from "ethers";
 import { ALLOWED_CHAINS } from "config/constants";
 import { ethereum, checkMetamaskInstalled, provider } from "config/ethereum";
 import { Chain } from "interfaces";
+import { toast } from "react-toastify";
 
 interface Props {
   account: string;
@@ -60,6 +61,7 @@ export const WalletProvider: FC<{ children: ReactNode }> = (props) => {
   const getAccount = async (overRideListener?: boolean): Promise<string> => {
     if (!overRideListener && !listeningForAccountChange) return "";
     if (!checkMetamaskInstalled()) {
+      toast.error("Metamask not installed");
       setAccount("");
       return "";
     }

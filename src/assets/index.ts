@@ -9,3 +9,4 @@ export { ReactComponent as ETHsymbol } from "./images/ETHsymbol.svg";
 export { ReactComponent as ETHlogo } from "./images/ETHlogo.svg";
 export { ReactComponent as POLYlogo } from "./images/POLYlogo.svg";
 export { ReactComponent as Send } from "./images/Send.svg";
+export { ReactComponent as Linker } from "./images/Linker.svg";

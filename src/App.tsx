@@ -5,6 +5,8 @@ import { ToggleChain } from "components/ToggleChain";
 import { Transact } from "components/Transact";
 import { FC } from "react";
 import classes from "styles/App.module.scss";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const App: FC = () => {
   return (
@@ -15,6 +17,7 @@ const App: FC = () => {
         <ToggleChain />
       </Section>
       <Transact />
+      <ToastContainer theme="colored" />
     </>
   );
 };

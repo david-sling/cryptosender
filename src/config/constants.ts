@@ -46,3 +46,8 @@ export const ERC20Tokens: Token[] = [
     };
   }, {}),
 }));
+
+export const blockexplorer = {
+  ropsten: (hash: string) => `https://ropsten.etherscan.io/tx/${hash}`,
+  matic: (hash: string) => `https://mumbai.polygonscan.com/tx/${hash}`,
+};

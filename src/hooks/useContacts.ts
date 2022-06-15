@@ -70,6 +70,12 @@ export const useContacts = () => {
       )
     );
 
+  const resetTransaction = () => {
+    setAmount(0);
+    setContacts((p) => p.map((c) => ({ ...c, isSelected: false })));
+    setSplitEqual(true);
+  };
+
   return {
     contacts,
     selectedContacts,
@@ -84,5 +90,6 @@ export const useContacts = () => {
     setAmount,
     summationSelected,
     changeSplitAmount,
+    resetTransaction,
   };
 };
