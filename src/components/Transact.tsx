@@ -85,9 +85,6 @@ export const Transact: FC = () => {
               value: ethers.utils.parseEther(amount.toString()),
             });
             const waited = await tx?.wait?.();
-            toast.success(
-              `Sent ${amount} ${isMatic ? "MATIC" : "ETH"} to ${address}`
-            );
             setTransactionReciepts((p) => ({ ...p, [address]: waited }));
             return waited;
           } else {
@@ -103,9 +100,6 @@ export const Transact: FC = () => {
               }
             );
             const waited = await tx?.wait?.();
-            toast.success(
-              `Sent ${amount} ${selectedTokenDetails.symbol} to ${address}`
-            );
             setTransactionReciepts((p) => ({ ...p, [address]: waited }));
             return waited;
           }
@@ -119,7 +113,6 @@ export const Transact: FC = () => {
             codes[error.code as keyof typeof codes] || error.code
           }`;
           console.error({ message });
-          toast.error(message);
           return null;
         }
       })
@@ -378,6 +371,7 @@ export const Transact: FC = () => {
           </div>
         </div>
       </Section>
+      {transactionStatus === "pending" && <div className={classes.backdrop} />}
       {transactionStatus === "completed" && (
         <TransactionModal
           transactionReciepts={transactionReciepts}
@@ -385,6 +379,7 @@ export const Transact: FC = () => {
           onClose={() => {
             resetTransaction();
             setTransactionStatus("");
+            setTransactionReciepts({});
           }}
         />
       )}

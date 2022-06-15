@@ -361,7 +361,9 @@
       left: 0;
       right: 0;
       transition: 0.2s;
+      // transform: scale(15);
       &.pending {
+        animation: pulsateScale 1s infinite 0.2s;
         transform: scale(15);
       }
       &.completed {
@@ -369,5 +371,28 @@
         background-color: #9364c2;
       }
     }
+  }
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #000;
+  z-index: 3;
+  opacity: 0.5;
+}
+
+@keyframes pulsateScale {
+  0% {
+    transform: scale(16.5);
+  }
+  80% {
+    transform: scale(15);
+  }
+  100% {
+    transform: scale(16.5);
   }
 }
