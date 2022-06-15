@@ -107,6 +107,9 @@
   background-color: #815ba8;
   padding: 29px 47px;
   border-radius: 0 23px 23px 0;
+  &.noOverflow {
+    overflow: hidden;
+  }
   .box {
     background-color: #fff;
     border-radius: 20px;

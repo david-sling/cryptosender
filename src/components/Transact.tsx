@@ -19,6 +19,7 @@ import { useMemo } from "react";
 import { FC } from "react";
 import { toast } from "react-toastify";
 import classes from "styles/components/Transact.module.scss";
+import { NoContactSelected } from "./NoContactSelected";
 import { Section } from "./Section";
 import { TransactionModal } from "./TransactionModal";
 
@@ -39,7 +40,7 @@ export const Transact: FC = () => {
     summationSelected,
     resetTransaction,
   } = useContacts();
-  const { currentChain, isMatic, getBalance } = useWallet();
+  const { currentChain, isMatic, getBalance, balance } = useWallet();
 
   const [selectedToken, setSelectedToken] = useState("ETH");
   const [isTokenSelectOpen, setIsTokenSelectOpen] = useState(false);
@@ -192,7 +193,12 @@ export const Transact: FC = () => {
               </form>
             </div>
           </div>
-          <div className={classes.sender}>
+          <div
+            className={[
+              classes.sender,
+              selectedContacts.length ? classes.overflow : classes.noOverflow,
+            ].join(" ")}
+          >
             {selectedContacts.length ? (
               <>
                 <div className={classes.menu}>
@@ -285,7 +291,7 @@ export const Transact: FC = () => {
                         <span className={classes.sym}>
                           <selectedTokenDetails.Icon height={15} width={13} />
                         </span>
-                        0000
+                        {balance}
                       </p>
                     </div>
                     <div
@@ -366,7 +372,7 @@ export const Transact: FC = () => {
                 </div>
               </>
             ) : (
-              <div></div>
+              <NoContactSelected />
             )}
           </div>
         </div>

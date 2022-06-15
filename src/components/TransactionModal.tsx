@@ -56,47 +56,51 @@ export const TransactionModal: FC<Props> = ({
             Some of your transactions <span>failed</span>
           </h1>
         )}
-        <div className={classes.transactions}>
-          {selectedContacts.map((contact) => (
-            <div className={classes.transactionWrapper}>
-              <div
-                key={contact.address}
-                className={[
-                  classes.transaction,
-                  transactionReciepts[contact.address]
-                    ? classes.success
-                    : classes.failure,
-                ].join(" ")}
-              >
-                <div>
-                  <p className={classes.nickname}>{contact.nickname}</p>
-                  <p className={classes.address}>{contact.address}</p>
+        <div className={classes.transactionsWrapper}>
+          <div className={classes.transactions}>
+            {selectedContacts.map((contact) => (
+              <div className={classes.transactionWrapper}>
+                <div
+                  key={contact.address}
+                  className={[
+                    classes.transaction,
+                    transactionReciepts[contact.address]
+                      ? classes.success
+                      : classes.failure,
+                  ].join(" ")}
+                >
+                  <div>
+                    <p className={classes.nickname}>{contact.nickname}</p>
+                    <p className={classes.address}>{contact.address}</p>
+                  </div>
+                  <div className={classes.message}>
+                    Transaction{" "}
+                    {transactionReciepts[contact.address]
+                      ? "Success"
+                      : "Failed"}
+                  </div>
                 </div>
-                <div className={classes.message}>
-                  Transaction{" "}
-                  {transactionReciepts[contact.address] ? "Success" : "Failed"}
+                <div className={classes.linkWrapper}>
+                  {transactionReciepts[contact.address]?.transactionHash && (
+                    <a
+                      href={(isMatic
+                        ? blockexplorer.matic
+                        : blockexplorer.ropsten)(
+                        transactionReciepts[contact.address]?.transactionHash ||
+                          ""
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <div className={classes.link}>
+                        <Linker />
+                      </div>
+                    </a>
+                  )}
                 </div>
               </div>
-              <div className={classes.linkWrapper}>
-                {transactionReciepts[contact.address]?.transactionHash && (
-                  <a
-                    href={(isMatic
-                      ? blockexplorer.matic
-                      : blockexplorer.ropsten)(
-                      transactionReciepts[contact.address]?.transactionHash ||
-                        ""
-                    )}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div className={classes.link}>
-                      <Linker />
-                    </div>
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         <button onClick={onClose} className={classes.continue}>
           Continue
