@@ -7,6 +7,7 @@ import { FC } from "react";
 import classes from "styles/App.module.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { UnsupportedChainModal } from "components/UnsupportedChainModal";
 
 const App: FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: FC = () => {
       </Section>
       <Transact />
       <ToastContainer theme="colored" />
+      <UnsupportedChainModal />
     </>
   );
 };
